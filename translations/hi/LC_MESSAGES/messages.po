@@ -1,0 +1,114 @@
+msgid "Login"
+msgstr "लॉगिन करें"
+
+msgid "Username"
+msgstr "उपयोगकर्ता नाम"
+
+msgid "Password"
+msgstr "पासवर्ड"
+
+msgid "Submit"
+msgstr "सबमिट करें"
+
+msgid "Logout"
+msgstr "लॉगआउट"
+
+msgid "Dashboard"
+msgstr "डैशबोर्ड"
+
+msgid "Billing"
+msgstr "बिलिंग"
+
+msgid "Add Product"
+msgstr "उत्पाद जोड़ें"
+
+msgid "Product Name"
+msgstr "उत्पाद का नाम"
+
+msgid "Price"
+msgstr "कीमत"
+
+msgid "Stock"
+msgstr "स्टॉक"
+
+msgid "Category"
+msgstr "श्रेणी"
+
+msgid "Generate Bill"
+msgstr "बिल जनरेट करें"
+
+msgid "Worker Login"
+msgstr "कर्मचारी लॉगिन"
+
+msgid "Welcome"
+msgstr "स्वागत है"
+
+msgid "Add New Product"
+msgstr "नया उत्पाद जोड़ें"
+
+msgid "Current Stock"
+msgstr "वर्तमान स्टॉक"
+
+msgid "Add to Cart"
+msgstr "कार्ट में जोड़ें"
+
+msgid "Product ID"
+msgstr "उत्पाद आईडी"
+
+msgid "Customer Name"
+msgstr "ग्राहक का नाम"
+
+msgid "Customer Phone"
+msgstr "ग्राहक का फ़ोन"
+
+msgid "Discount"
+msgstr "छूट"
+
+msgid "Tax"
+msgstr "कर"
+
+msgid "Net Total"
+msgstr "कुल योग"
+
+msgid "Download PDF"
+msgstr "पीडीएफ डाउनलोड करें"
+
+msgid "Print Bill"
+msgstr "बिल प्रिंट करें"
+
+msgid "Select Language"
+msgstr "भाषा चुनें"
+
+msgid "Back to Home"
+msgstr "मुख्य पृष्ठ पर लौटें"
+
+msgid "Report"
+msgstr "रिपोर्ट"
+
+msgid "Sales Report"
+msgstr "बिक्री रिपोर्ट"
+
+msgid "Inventory Report"
+msgstr "इन्वेंटरी रिपोर्ट"
+
+msgid "Daily"
+msgstr "दैनिक"
+
+msgid "Weekly"
+msgstr "साप्ताहिक"
+
+msgid "Monthly"
+msgstr "मासिक"
+
+msgid "All Products"
+msgstr "सभी उत्पाद"
+
+msgid "Actions"
+msgstr "क्रियाएँ"
+
+msgid "Update"
+msgstr "अपडेट करें"
+
+msgid "Delete"
+msgstr "हटाएं"
+

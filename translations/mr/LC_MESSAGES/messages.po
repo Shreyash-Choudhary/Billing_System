@@ -1,0 +1,38 @@
+msgid "Login"
+msgstr "लॉगिन करा"
+
+msgid "Username"
+msgstr "वापरकर्तानाव"
+
+msgid "Password"
+msgstr "पासवर्ड"
+
+msgid "Submit"
+msgstr "सबमिट करा"
+
+msgid "Logout"
+msgstr "बाहेर पडा"
+
+msgid "Dashboard"
+msgstr "डॅशबोर्ड"
+
+msgid "Billing"
+msgstr "बिलिंग"
+
+msgid "Add Product"
+msgstr "उत्पादन जोडा"
+
+msgid "Product Name"
+msgstr "उत्पादनाचे नाव"
+
+msgid "Price"
+msgstr "किंमत"
+
+msgid "Stock"
+msgstr "साठा"
+
+msgid "Category"
+msgstr "श्रेणी"
+
+msgid "Generate Bill"
+msgstr "बिल तयार करा"

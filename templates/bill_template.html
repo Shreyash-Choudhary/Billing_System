@@ -1,0 +1,15 @@
+<!-- templates/bill_pdf.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bill Preview</title>
+</head>
+<body>
+    <h1>Bill Generated</h1>
+    <p><strong>Total:</strong> ₹{{ total }}</p>
+    <p><strong>Payment Mode:</strong> {{ payment_mode }}</p>
+    <a href="/{{ pdf_path }}" target="_blank">Download Bill (PDF)</a><br><br>
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>
+

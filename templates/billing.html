@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="{{ get_locale() }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ _('Billing') }} - GoVigyan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-label { font-weight: 500; }
+        .btn-primary, .btn-success, .btn-danger { width: 100%; }
+        @media (min-width: 768px) {
+            .btn-primary, .btn-success, .btn-danger { width: auto; }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand" href="#">{{ _('GoVigyan Billing System') }}</a>
+    <div class="ms-auto">
+        <a class="btn btn-outline-light btn-sm me-2" href="{{ url_for('home') }}">{{ _('Home') }}</a>
+        <a class="btn btn-outline-light btn-sm me-2" href="{{ url_for('add_product') }}">{{ _('Add Product') }}</a>
+        <a class="btn btn-outline-light btn-sm me-2" href="{{ url_for('dashboard') }}">{{ _('Dashboard') }}</a>
+        <a class="btn btn-outline-light btn-sm me-2" href="{{ url_for('report') }}">{{ _('Generate Report') }}</a>
+        <a class="btn btn-outline-danger btn-sm" href="{{ url_for('logout') }}">{{ _('Logout') }}</a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h2 class="mb-3">{{ _('Billing Section') }}</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('billing') }}" class="row g-3 p-4 border rounded bg-light shadow-sm">
+        <div class="col-md-4">
+            <label for="customer_name" class="form-label">{{ _('Customer Name') }}</label>
+            <input type="text" class="form-control" name="customer_name" id="customer_name" required>
+        </div>
+        <div class="col-md-4">
+            <label for="phone_number" class="form-label">{{ _('Customer Phone') }}</label>
+            <input type="text" class="form-control" name="phone_number" id="phone_number" required>
+        </div>
+        <div class="col-md-4">
+            <label for="product_id" class="form-label">{{ _('Select Product') }}</label>
+            <select name="product_id" class="form-select" required>
+                {% for product in products %}
+                    <option value="{{ product.id }}" {% if product.stock == 0 %}disabled{% endif %}>
+                        {{ product.name }} - ₹{{ product.price }} ({{ product.stock }} in stock{% if product.stock == 0 %} - {{ _('Out of Stock') }}{% endif %})
+                    </option>
+                {% endfor %}
+            </select>
+            <div class="form-text">{{ _('If product already exists in bill, quantity will be updated.') }}</div>
+        </div>
+        <div class="col-md-2">
+            <label for="quantity" class="form-label">{{ _('Quantity') }}</label>
+            <input type="number" class="form-control" name="quantity" min="1" required>
+        </div>
+        <div class="col-md-3 align-self-end d-grid">
+            <button type="submit" class="btn btn-primary">{{ _('Add to Bill') }}</button>
+        </div>
+    </form>
+
+    <h5 class="mt-4">{{ _('Available Products') }}</h5>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered table-sm text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>{{ _('Product') }}</th>
+                    <th>{{ _('Price (₹)') }}</th>
+                    <th>{{ _('Stock') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.price }}</td>
+                        <td {% if product.stock == 0 %} class="text-danger" {% endif %}>
+                            {{ product.stock }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if cart %}
+        <div class="alert alert-info mt-4">
+            <strong>{{ _('Customer Name:') }}</strong> {{ customer_name }} |
+            <strong>{{ _('Phone:') }}</strong> {{ phone_number }}
+        </div>
+
+        <h4 class="mt-4">{{ _('Current Bill') }}</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>{{ _('Product Name') }}</th>
+                        <th>{{ _('Price (₹)') }}</th>
+                        <th>{{ _('Quantity') }}</th>
+                        <th>{{ _('Total (₹)') }}</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    {% for item in cart %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="table-secondary text-center">
+                    <tr>
+                        <th colspan="3" class="text-end">{{ _('Grand Total') }}</th>
+                        <th>₹{{ grand_total }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-3">
+            <form method="POST" action="{{ url_for('generate_pdf_bill') }}">
+                <button type="submit" class="btn btn-success">{{ _('Generate & Download Bill PDF') }}</button>
+            </form>
+
+            <form method="POST" action="{{ url_for('reset_cart') }}">
+                <button type="submit" class="btn btn-danger">{{ _('Clear Bill') }}</button>
+            </form>
+        </div>
+    {% else %}
+        <p class="text-muted mt-4">{{ _('No items in the bill yet. Please add products.') }}</p>
+    {% endif %}
+</div>
+
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(alert => {
+            alert.remove();
+        });
+    }, 4000);
+</script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,38 @@
+msgid "Login"
+msgstr "Login"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Submit"
+msgstr "Submit"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Billing"
+msgstr "Billing"
+
+msgid "Add Product"
+msgstr "Add Product"
+
+msgid "Product Name"
+msgstr "Product Name"
+
+msgid "Price"
+msgstr "Price"
+
+msgid "Stock"
+msgstr "Stock"
+
+msgid "Category"
+msgstr "Category"
+
+msgid "Generate Bill"
+msgstr "Generate Bill"
