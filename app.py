@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, send_file, make_response, flash
-from flask_babel import Babel, gettext as _
+from flask_babel import Babel, gettext as _ # etc.
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from io import BytesIO
@@ -7,13 +7,19 @@ from reportlab.lib.pagesizes import A4, letter
 from reportlab.pdfgen import canvas
 from forms import ProductForm
 from flask import flash
+import os
 
-app = Flask(__name__)
+
+
+app = Flask(__name__, instance_relative_config=True)
 app.secret_key = 'your_secret_key'
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 
+
 # Database config
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///govigyan.db'
+basedir = os.path.abspath(os.path.dirname(__file__))  # 👈 ensures you're in your current project folder
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'govigyan.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Multilingual config
@@ -26,12 +32,7 @@ class Worker(db.Model):
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
 
-class Product(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(150), unique=True)
-    price = db.Column(db.Float)
-    stock = db.Column(db.Integer)
-    category = db.Column(db.String(50))
+# models.py or in your Product model in app.py (SQLAlchemy)
 
 class Sale(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -41,6 +42,15 @@ class Sale(db.Model):
     customer_name = db.Column(db.String(150))
     phone_number = db.Column(db.String(20))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    stock = db.Column(db.Integer, nullable=False)  # ✅ This is correct
+    quantity = db.Column(db.Integer, default=0)
+    is_active = db.Column(db.Boolean, default=True)
+
 
 # -------------------- Language Settings --------------------
 @babel.localeselector
@@ -92,7 +102,8 @@ def home():
     if 'worker' not in session:
         return redirect(url_for('login'))
 
-    products = Product.query.all()
+    products = Product.query.filter_by(is_active=True).all()
+
 
     # Prepare chart data even if it's empty
     chart_labels = []
@@ -118,15 +129,16 @@ def add_product():
 
     if form.validate_on_submit():
         new_product = Product(
-            name=form.name.data,
-            price=form.price.data,
-            stock=form.stock.data,
-            category=request.form.get('category')  # still from raw form
-        )
+    name=form.name.data,
+    price=form.price.data,
+    quantity=form.quantity.data,
+    is_active=False  # mark as inactive initially
+)
+
         db.session.add(new_product)
         db.session.commit()
         flash("Product added successfully!", "success")
-        return redirect(url_for('billing'))
+        return redirect(url_for('home'))  # ✅ Redirect to home after adding
     else:
         if request.method == 'POST':
             flash("Please correct the errors in the form.", "danger")
@@ -135,13 +147,14 @@ def add_product():
     return render_template('add_product.html', form=form, products=products)
 
 
+
 # -------------------- Billing --------------------
 @app.route('/billing', methods=['GET', 'POST'])
 def billing():
     if 'worker' not in session:
         return redirect(url_for('login'))
 
-    products = Product.query.all()
+    products = Product.query.filter_by(is_active=True).all()
     cart = session.get('cart', [])
     grand_total = sum(item['total'] for item in cart)
 
@@ -152,8 +165,8 @@ def billing():
         quantity = int(request.form['quantity'])
 
         product = Product.query.get(product_id)
-        if product and product.stock >= quantity:
-            product.stock -= quantity
+        if product and product.quantity >= quantity:
+            product.quantity -= quantity
             total_price = quantity * product.price
 
             # Add to session cart
@@ -268,10 +281,11 @@ def generate_pdf_bill():
 @app.route('/dashboard')
 def dashboard():
     if 'worker' not in session:
-        return redirect(url_for('home'))
+        return redirect(url_for('login'))
 
     total_products = Product.query.count()
-    low_stock_count = Product.query.filter(Product.stock < 10).count()
+    low_stock_count = Product.query.filter(Product.quantity < 10).count()
+    low_stock_items = Product.query.filter(Product.quantity < 10).all()
     total_sales = db.session.query(db.func.sum(Sale.total_price)).scalar() or 0
 
     recent_sales = db.session.query(

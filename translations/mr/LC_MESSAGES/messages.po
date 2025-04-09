@@ -36,3 +36,79 @@ msgstr "श्रेणी"
 
 msgid "Generate Bill"
 msgstr "बिल तयार करा"
+
+msgid "Worker Login"
+msgstr "कामगार लॉगिन"
+
+msgid "Welcome"
+msgstr "स्वागत आहे"
+
+msgid "Add New Product"
+msgstr "नवीन उत्पादन जोडा"
+
+msgid "Current Stock"
+msgstr "सध्याचा साठा"
+
+msgid "Add to Cart"
+msgstr "कार्टमध्ये जोडा"
+
+msgid "Product ID"
+msgstr "उत्पादन आयडी"
+
+msgid "Customer Name"
+msgstr "ग्राहकाचे नाव"
+
+msgid "Customer Phone"
+msgstr "ग्राहकाचा फोन"
+
+msgid "Discount"
+msgstr "सूट"
+
+msgid "Tax"
+msgstr "कर"
+
+msgid "Net Total"
+msgstr "निव्वळ एकूण"
+
+msgid "Download PDF"
+msgstr "पीडीएफ डाउनलोड करा"
+
+msgid "Print Bill"
+msgstr "बिल प्रिंट करा"
+
+msgid "Select Language"
+msgstr "भाषा निवडा"
+
+msgid "Back to Home"
+msgstr "मुख्यपृष्ठावर परत जा"
+
+msgid "Report"
+msgstr "अहवाल"
+
+msgid "Sales Report"
+msgstr "विक्री अहवाल"
+
+msgid "Inventory Report"
+msgstr "साठा अहवाल"
+
+msgid "Daily"
+msgstr "दैनिक"
+
+msgid "Weekly"
+msgstr "आठवड्याचा"
+
+msgid "Monthly"
+msgstr "महिन्याचा"
+
+msgid "All Products"
+msgstr "सर्व उत्पादने"
+
+msgid "Actions"
+msgstr "क्रिया"
+
+msgid "Update"
+msgstr "अपडेट करा"
+
+msgid "Delete"
+msgstr "हटवा"
+
